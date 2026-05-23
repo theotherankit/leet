@@ -5,9 +5,7 @@ class Solution {
             if(nums[i] > nums[(i + 1) % nums.length])
                 cnt++;
         }
-        if(cnt > 1)
-            return false;
         
-        return true;
+        return (cnt > 1) ? false : true;
     }
 }
