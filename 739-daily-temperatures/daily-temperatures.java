@@ -10,7 +10,6 @@ class Solution {
                 curr[st.peek()] = i - st.pop();
             st.push(i);
         }
-
         return curr;
     }
 }
