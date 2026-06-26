@@ -14,7 +14,6 @@
  * }
  */
 class Solution {
-    int cnt = 1;
     public int goodNodes(TreeNode root) {
         return dfs(root, root.val);
     }
