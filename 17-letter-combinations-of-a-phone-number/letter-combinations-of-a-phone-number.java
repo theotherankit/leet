@@ -11,8 +11,7 @@ class Solution {
         mp.put(8, List.of('t', 'u', 'v'));
         mp.put(9, List.of('w', 'x', 'y', 'z'));
 
-        String s = "";
-        dfs(digits, s, 0);
+        dfs(digits, "", 0);
         return res;
     }
 
@@ -24,7 +23,7 @@ class Solution {
 
         int x = digits.charAt(start) - '0';
         List<Character> letters = mp.get(x);
-        for(int i = 0 ; i < letters.size() ; i++)
-            dfs(digits, s + letters.get(i), start + 1);
+        for(char ch: letters)
+            dfs(digits, s + ch, start + 1);
     }
 }
