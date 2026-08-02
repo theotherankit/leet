@@ -1,17 +1,23 @@
 class Solution {
-    void dfs(int r, int c, int state[][], int flag, int heights[][], int prev) {
-        if(r < 0 || r >= state.length || c < 0 || c >= state[0].length)
-            return;
-        if((state[r][c] & flag) != 0)
-            return;
-        if(heights[r][c] < prev)
-            return;
-
-        state[r][c] |= flag;
-        dfs(r - 1, c, state, flag, heights, heights[r][c]);
-        dfs(r + 1, c, state, flag, heights, heights[r][c]);
-        dfs(r, c - 1, state, flag, heights, heights[r][c]);
-        dfs(r, c + 1, state, flag, heights, heights[r][c]);
+    int dirs[][] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    void bfs(Queue<int[]> q, int flag, int state[][], int heights[][]) {
+        while(!q.isEmpty()) {
+            int x[] = q.poll();
+            int px = x[0];
+            int py = x[1];
+            for(int dir[]: dirs) {
+                int px1 = px + dir[0];
+                int py1 = py + dir[1];
+                if(px1 >= 0 && px1 < heights.length && py1 >= 0 && py1 < heights[0].length) {
+                    if((state[px1][py1] & flag) != 0)
+                        continue;
+                    if(heights[px1][py1] < heights[px][py])
+                        continue;
+                    state[px1][py1] |= flag;
+                    q.offer(new int[]{px1, py1});
+                }
+            }
+        }
     }
 
     public List<List<Integer>> pacificAtlantic(int[][] heights) {
@@ -19,15 +25,26 @@ class Solution {
         int m = heights.length, n = heights[0].length;
         int state[][] = new int[m][n];
         
+        Queue<int[]> pacQ = new LinkedList<>();
+        Queue<int[]> atlQ = new LinkedList<>();
         for(int i = 0 ; i < m ; i++) {
-            dfs(i, 0, state, 1, heights, 0);
-            dfs(i, n - 1, state, 2, heights, 0);
+            state[i][0] |= 1;
+            pacQ.offer(new int[]{i, 0});
+
+            state[i][n - 1] |= 2;
+            atlQ.offer(new int[]{i, n - 1});
         }
 
         for(int j = 0 ; j < n ; j++) {
-            dfs(0, j, state, 1, heights, 0);
-            dfs(m - 1, j, state, 2, heights, 0);
+            state[0][j] |= 1;
+            pacQ.offer(new int[]{0, j});
+
+            state[m - 1][j] |= 2;
+            atlQ.offer(new int[]{m - 1, j});
         }
+
+        bfs(pacQ, 1, state, heights);
+        bfs(atlQ, 2, state, heights);
 
         for(int i = 0 ; i < m ; i++)
             for(int j = 0 ; j < n ; j++)
