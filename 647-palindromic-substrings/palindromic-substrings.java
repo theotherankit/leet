@@ -1,13 +1,22 @@
 class Solution {
     public int countSubstrings(String s) {
-        int n = s.length(), res = 0;
-        boolean dp[][] = new boolean[n][n];
-        for(int i = n - 1 ; i >= 0 ; i--) {
-            for(int j = i ; j < n ; j++)
-                if(s.charAt(i) == s.charAt(j) && (j - i <= 2 || dp[i + 1][j - 1])) {
-                    dp[i][j] = true;
-                    res++;
-                }
+        int res = 0, n = s.length();
+        for(int i = 0 ; i < n ; i++) {
+            // odd pals
+            int l = i, r = i;
+            while(l >= 0 && r < n && s.charAt(l) == s.charAt(r)) {
+                res++;
+                l--;
+                r++;
+            }
+            // even pals
+            l = i;
+            r = i + 1;
+            while(l >= 0 && r < n && s.charAt(l) == s.charAt(r)) {
+                res++;
+                l--;
+                r++;
+            }   
         }
 
         return res;
